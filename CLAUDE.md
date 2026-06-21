@@ -9,8 +9,8 @@ Uzbek up to A2.2, then progressively in German. Text + audio.
 
 ## Key design decisions (don't break these)
 - The CURRICULUM IS FIXED. The LLM teaches *within* a unit and must not invent
-  the syllabus. Units live in `backend/app/curriculum/units.py` (move to
-  Postgres later). Seed new levels by adding Unit objects.
+  the syllabus. Units are stored in Postgres (models.py). To seed new levels,
+  add Unit objects to curriculum/units.py and run seed_db.py.
 - The Uzbek->German switch is driven by `default_instruction_language(level)`
   in `backend/app/prompts/tutor_prompt.py`, overridable per user. Do NOT
   hardcode a cutoff anywhere else.
@@ -25,7 +25,8 @@ Backend:
     cd backend
     python -m venv .venv && source .venv/bin/activate
     pip install -r requirements.txt
-    cp .env.example .env   # add your keys
+    cp .env.example .env   # add your keys + DATABASE_URL
+    python seed_db.py      # initialize database and seed A1.1 units
     uvicorn app.main:app --reload
 
 Frontend:
@@ -37,6 +38,6 @@ Frontend:
 1. [DONE] TTS wired (ElevenLabs) in services/tts.py + /audio/speak route.
    Set ELEVENLABS_API_KEY + TTS_DE_VOICE_ID + TTS_UZ_VOICE_ID in .env to use it.
 2. [DONE] Scaffold the Next.js frontend (chat UI + tap-to-hear audio).
-3. Wire Whisper in services/stt.py + a /lessons/audio route.
-4. Move curriculum + learner progress into Postgres.
+3. [DONE] Wire Whisper in services/stt.py + /audio/listen route for pronunciation practice.
+4. [DONE] Move curriculum + learner progress into Postgres (models.py, database.py, seed_db.py).
 5. Add a vocab SRS table.
