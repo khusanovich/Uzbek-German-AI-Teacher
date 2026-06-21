@@ -7,10 +7,14 @@ Usage:
 """
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Add backend to path so we can import app modules
 backend_dir = Path(__file__).parent
 sys.path.insert(0, str(backend_dir))
+
+# Load environment variables from .env file
+load_dotenv()
 
 from app.database import init_db, SessionLocal
 from app.models import Unit as UnitModel
