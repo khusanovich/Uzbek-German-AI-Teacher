@@ -5,7 +5,7 @@ Uzbek up to A2.2, then progressively in German. Text + audio.
 
 ## Architecture
 - `backend/` — FastAPI. Orchestrates the tutor LLM + audio services.
-- `frontend/` — Next.js (App Router, TS, Tailwind). Not scaffolded yet.
+- `frontend/` — Next.js (App Router, TS, Tailwind). Chat UI with unit picker, message list, and audio playback.
 
 ## Key design decisions (don't break these)
 - The CURRICULUM IS FIXED. The LLM teaches *within* a unit and must not invent
@@ -20,16 +20,23 @@ Uzbek up to A2.2, then progressively in German. Text + audio.
 - Learner speaks German (well supported by Whisper). Avoid relying on Uzbek STT.
 
 ## Run
+
+Backend:
     cd backend
     python -m venv .venv && source .venv/bin/activate
     pip install -r requirements.txt
     cp .env.example .env   # add your keys
     uvicorn app.main:app --reload
 
+Frontend:
+    cd frontend
+    npm install
+    npm run dev
+
 ## Next tasks
 1. [DONE] TTS wired (ElevenLabs) in services/tts.py + /audio/speak route.
    Set ELEVENLABS_API_KEY + TTS_DE_VOICE_ID + TTS_UZ_VOICE_ID in .env to use it.
-2. Wire Whisper in services/stt.py + a /lessons/audio route.
-3. Move curriculum + learner progress into Postgres.
-4. Scaffold the Next.js frontend (chat UI + tap-to-hear audio).
+2. [DONE] Scaffold the Next.js frontend (chat UI + tap-to-hear audio).
+3. Wire Whisper in services/stt.py + a /lessons/audio route.
+4. Move curriculum + learner progress into Postgres.
 5. Add a vocab SRS table.
